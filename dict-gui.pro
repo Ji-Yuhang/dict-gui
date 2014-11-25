@@ -14,13 +14,17 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    exportwidget.cpp
+    exportwidget.cpp \
+    json.cpp
 
 HEADERS  += mainwindow.hxx \
-    exportwidget.hxx
+    exportwidget.hxx \
+    json.h
 
 FORMS    += mainwindow.ui \
     exportwidget.ui
-INCLUDEPATH += /home/jiyuhang/program/jyhsdk/cpp/include
-LIBS += -L/home/jiyuhang/program/jyhsdk/cpp/lib
-LIBS += -ljyh
+unix {
+#INCLUDEPATH += /home/jiyuhang/program/jyhsdk/cpp/include
+#LIBS += -L/home/jiyuhang/program/jyhsdk/cpp/lib
+#LIBS += -ljyh
+}

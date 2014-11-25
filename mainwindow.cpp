@@ -10,12 +10,15 @@
 #include <QNetworkReply>
 #include <iostream>
 #include <QDebug>
+#include <QFontMetricsF>
+#include <QFontMetrics>
+#include <QFont>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->actionExportAnki, SIGNAL(triggered()), this, SLOT(on_exportAnki_triggered()));
+    connect(ui->actionExportAnki, SIGNAL(triggered()), this, SLOT(export_triggered()));
 }
 
 MainWindow::~MainWindow()
@@ -55,10 +58,10 @@ QString MainWindow::getWord(const QString &word)
             if (json.contains("data")) {
                 QtJson::JsonObject dataObj = json["data"].toMap();
                 QString cnValue = dataObj["definition"].toString();
-                std::cout<< cnValue.toUtf8().data() << std::endl;
+                std::cout<< cnValue.toLocal8Bit().data() << std::endl;
             }
             QString myJson = QtJson::serializeStr(json);
-            std::cout<< myJson.toUtf8().data() << std::endl;
+            std::cout<< myJson.toLocal8Bit().data() << std::endl;
             makeTree(json);
             return myJson;
         }
@@ -112,22 +115,42 @@ void MainWindow::makeTree(const QtJson::JsonObject &json)
     QString us_audio = dataObj["us_audio"].toString();
 //    QString cnValue = dataObj["definition"].toString();
     ui->content->setText(content);
-    ui->pron->setText(pron);
-    ui->type->setText(content_type);
+    ui->pron->setText("<font face='Arial'>["+pron+"]</font>");
+//    ui->type->setText(content_type);
     ui->cn->setText(definition);
+    {
+        int fontWidth = ui->sentence->fontMetrics().width(en_definition);
+        int labelWidth = ui->sentence->width();
+
+//        num/ size = labelWidth / fontWidth;
+        int num = labelWidth * en_definition.size() / fontWidth;
+        int i = en_definition.size() / num;
+        while (i > 0) {
+            en_definition.insert(num - 1 + num * i,'\n');
+            i--;
+        }
+    }
+
     ui->sentence->setText(en_definition);
     mp3_ = us_audio;
+    ui->statusBar->showMessage(content);
 
 
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    QString command = QString("mplayer %1").arg(mp3_);
+    QString mplayer = "C:/mplayer.exe";
+    QString command = QString("%1 %2").arg(mplayer).arg(mp3_);
     system(command.toUtf8().data());
 }
 
-void MainWindow::on_exportAnki_triggered()
+void MainWindow::export_triggered()
 {
     exportWidget_.showNormal();
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+
 }

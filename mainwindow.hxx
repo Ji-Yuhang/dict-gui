@@ -22,7 +22,9 @@ private slots:
     QString getWord(const QString& word);
     void makeTree(const QtJson::JsonObject& json);
     void on_pushButton_2_clicked();
-    void on_exportAnki_triggered();
+    void export_triggered();
+
+    void on_pushButton_3_clicked();
 
 private:
     Ui::MainWindow *ui;
