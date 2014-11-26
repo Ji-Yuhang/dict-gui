@@ -2,8 +2,10 @@
 #define MAINWINDOW_HXX
 
 #include <QMainWindow>
+#include <QMediaPlayer>
 #include <json.h>
 #include "exportwidget.hxx"
+#include "wordhistory.hxx"
 namespace Ui {
 class MainWindow;
 }
@@ -26,10 +28,14 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void on_pushButton_4_clicked();
+    
 private:
     Ui::MainWindow *ui;
     QString mp3_;
     ExportWidget exportWidget_;
+    QMediaPlayer player_;
+    WordHistory history_;
 };
 
 #endif // MAINWINDOW_HXX

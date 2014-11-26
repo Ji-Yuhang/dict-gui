@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QTextCodec>
 #include <QFont>
+//#include <
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -10,7 +11,7 @@ int main(int argc, char *argv[])
 #endif
 //    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     QFont f = a.font();
-    f.setPointSize(30);
+    f.setPointSize(18);
     a.setFont(f);
 
     MainWindow w;

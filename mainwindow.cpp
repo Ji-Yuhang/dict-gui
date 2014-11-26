@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QEventLoop>
 #include <QFileInfo>
+#include <QMediaPlayer>
 
 #include <QNetworkReply>
 #include <iostream>
@@ -20,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->actionExportAnki, SIGNAL(triggered()), this, SLOT(export_triggered()));
+    setFixedSize(this->sizeHint());
 }
 
 MainWindow::~MainWindow()
@@ -32,6 +34,7 @@ void MainWindow::on_pushButton_clicked()
     mp3_ = "";
 
     QString word = ui->word->text();
+    if (word.isEmpty()) return;
     QString shanbayWord = getWord(word);
 //    ui->textEdit->setHtml(shanbayWord);
 }
@@ -142,15 +145,26 @@ void MainWindow::makeTree(const QtJson::JsonObject &json)
     ui->statusBar->showMessage(content);
 
 
+    WordInfo wordInfo;
+    wordInfo.content = content;
+    wordInfo.definition = definition;
+    wordInfo.pron = pron;
+    wordInfo.en_definition = en_definition;
+    wordInfo.us_audio = us_audio;
+    history_.appendWord(wordInfo);
+
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    QString mplayer = "C:/mplayer.exe";
-    QFileInfo fileinfo(mplayer);
-    if (!fileinfo.exists()) mplayer = "D:/Anki/mplayer.exe";
-    QString command = QString("%1 %2").arg(mplayer).arg(mp3_);
-    system(command.toUtf8().data());
+//    QString mplayer = "C:/mplayer.exe";
+//    QFileInfo fileinfo(mplayer);
+//    if (!fileinfo.exists()) mplayer = "D:/Anki/mplayer.exe";
+//    QString command = QString("%1 %2").arg(mplayer).arg(mp3_);
+//    system(command.toUtf8().data());
+    player_.setMedia(QUrl(mp3_));
+    player_.setVolume(100);
+    player_.play();
 }
 
 void MainWindow::export_triggered()
@@ -161,4 +175,10 @@ void MainWindow::export_triggered()
 void MainWindow::on_pushButton_3_clicked()
 {
 
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    history_.showFullScreen();
+    
 }
