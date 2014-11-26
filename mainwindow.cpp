@@ -6,6 +6,7 @@
 #include <QNetworkAccessManager>
 #include <QTimer>
 #include <QEventLoop>
+#include <QFileInfo>
 
 #include <QNetworkReply>
 #include <iostream>
@@ -32,7 +33,7 @@ void MainWindow::on_pushButton_clicked()
 
     QString word = ui->word->text();
     QString shanbayWord = getWord(word);
-    ui->textEdit->setHtml(shanbayWord);
+//    ui->textEdit->setHtml(shanbayWord);
 }
 
 QString MainWindow::getWord(const QString &word)
@@ -118,6 +119,7 @@ void MainWindow::makeTree(const QtJson::JsonObject &json)
     ui->pron->setText("<font face='Arial'>["+pron+"]</font>");
 //    ui->type->setText(content_type);
     ui->cn->setText(definition);
+#if 0
     {
         int fontWidth = ui->sentence->fontMetrics().width(en_definition);
         int labelWidth = ui->sentence->width();
@@ -130,6 +132,10 @@ void MainWindow::makeTree(const QtJson::JsonObject &json)
             i--;
         }
     }
+#endif
+    {
+        en_definition.replace(";",";\n");
+    }
 
     ui->sentence->setText(en_definition);
     mp3_ = us_audio;
@@ -141,6 +147,8 @@ void MainWindow::makeTree(const QtJson::JsonObject &json)
 void MainWindow::on_pushButton_2_clicked()
 {
     QString mplayer = "C:/mplayer.exe";
+    QFileInfo fileinfo(mplayer);
+    if (!fileinfo.exists()) mplayer = "D:/Anki/mplayer.exe";
     QString command = QString("%1 %2").arg(mplayer).arg(mp3_);
     system(command.toUtf8().data());
 }

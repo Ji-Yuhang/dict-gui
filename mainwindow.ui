@@ -14,46 +14,15 @@
    <string>扇贝词典</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="1" column="1">
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="text">
-       <string>发音</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLineEdit" name="word"/>
-    </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>search</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>264</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="2" column="1">
-     <widget class="QPushButton" name="pushButton_3">
-      <property name="text">
-       <string>导出Anki</string>
-      </property>
-     </widget>
-    </item>
+   <layout class="QGridLayout" name="gridLayout_2" columnstretch="2,1">
     <item row="1" column="0" rowspan="3">
      <widget class="QGroupBox" name="groupBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="title">
        <string>单词释义</string>
       </property>
@@ -76,6 +45,9 @@
         <widget class="QLabel" name="sentence">
          <property name="text">
           <string/>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -102,8 +74,35 @@
       </layout>
      </widget>
     </item>
-    <item row="1" column="2" rowspan="3">
-     <widget class="QTextEdit" name="textEdit"/>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="text">
+       <string>发音</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLineEdit" name="word"/>
+    </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="pushButton">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>search</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>导出Anki</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -113,7 +112,7 @@
      <x>0</x>
      <y>0</y>
      <width>650</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -126,6 +125,7 @@
     <property name="title">
      <string>历史记录</string>
     </property>
+    <addaction name="actionWordHistory"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -142,6 +142,11 @@
   <action name="actionExportAnki">
    <property name="text">
     <string>批量导出Anki</string>
+   </property>
+  </action>
+  <action name="actionWordHistory">
+   <property name="text">
+    <string>单词历史记录</string>
    </property>
   </action>
  </widget>
