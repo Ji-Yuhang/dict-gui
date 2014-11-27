@@ -123,6 +123,7 @@ void MainWindow::makeTree(const QtJson::JsonObject &json)
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    //http://media.shanbay.com/audio/us/content.mp3
     QString command = QString("mplayer %1").arg(mp3_);
     system(command.toUtf8().data());
 }
