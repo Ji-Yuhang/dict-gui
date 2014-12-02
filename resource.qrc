@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Cygwin.ico</file>
+        <file>add.png</file>
+        <file>comment.png</file>
+        <file>cut.png</file>
+        <file>delete.png</file>
+        <file>folder.png</file>
+        <file>home.png</file>
+        <file>rss.png</file>
+    </qresource>
+</RCC>

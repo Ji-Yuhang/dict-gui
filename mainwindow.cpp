@@ -7,7 +7,7 @@
 #include <QTimer>
 #include <QEventLoop>
 #include <QFileInfo>
-#include <QMediaPlayer>
+//#include <QMediaPlayer>
 
 #include <QNetworkReply>
 #include <iostream>
@@ -15,13 +15,43 @@
 #include <QFontMetricsF>
 #include <QFontMetrics>
 #include <QFont>
+#include <QMenu>
+#include "QtSingleApplication"
+#include "addword.hxx"
+#include <QDebug>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
     connect(ui->actionExportAnki, SIGNAL(triggered()), this, SLOT(export_triggered()));
-    setFixedSize(this->sizeHint());
+//    setFixedSize(this->sizeHint());
+    trayIcon.setIcon(QIcon(":/add.png"));
+    trayIcon.show();
+//    trayIcon.showMessage("title","Hello, this is message");
+    QMenu * menu = new QMenu();
+//        QAction *addAction(const QString &text);
+    QAction * addAction = menu->addAction("add word");
+    QAction * mainAction = menu->addAction("serarch word");
+    QAction * quitAction = menu->addAction("quit");
+    connect(addAction, SIGNAL(triggered()), this, SLOT(on_add_triggered()));
+    connect(mainAction, SIGNAL(triggered()), this, SLOT(on_search_triggered()));
+
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(on_quit_triggered()));
+//    qDebug() << addAction << quitAction<<endl;
+
+
+    trayIcon.setContextMenu(menu);
+    connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(test_qapp_quit()));
+    connect(qApp, SIGNAL(lastWindowClosed()), this, SLOT(test_qapp_last()));
+    QKeySequence keySequence(Qt::CTRL + Qt::SHIFT+Qt::Key_C);
+
+    qDebug() << keySequence.toString();
+    globalAdd_.setShortcut(keySequence);
+    connect(&globalAdd_, SIGNAL(activated()), this, SLOT(on_short_triggered()));
+
 }
 
 MainWindow::~MainWindow()
@@ -124,7 +154,9 @@ void MainWindow::makeTree(const QtJson::JsonObject &json)
     ui->cn->setText(definition);
 #if 0
     {
-        int fontWidth = ui->sentence->fontMetrics().width(en_definition);
+        int fontWidth = ui->sent    ~AddWord();
+
+        private slots:ence->fontMetrics().width(en_definition);
         int labelWidth = ui->sentence->width();
 
 //        num/ size = labelWidth / fontWidth;
@@ -151,6 +183,7 @@ void MainWindow::makeTree(const QtJson::JsonObject &json)
     wordInfo.pron = pron;
     wordInfo.en_definition = en_definition;
     wordInfo.us_audio = us_audio;
+    addWordWidget_.addWord(wordInfo.content);
     history_.appendWord(wordInfo);
 
 }
@@ -163,9 +196,14 @@ void MainWindow::on_pushButton_2_clicked()
 //    if (!fileinfo.exists()) mplayer = "D:/Anki/mplayer.exe";
 //    QString command = QString("%1 %2").arg(mplayer).arg(mp3_);
 //    system(command.toUtf8().data());
-    player_.setMedia(QUrl(mp3_));
-    player_.setVolume(100);
-    player_.play();
+//    player_.setMedia(QUrl(mp3_));
+//    player_.setVolume(100);
+//    player_.play();
+#ifdef Q_OS_UNIX
+    QString mplayer = "mplayer";
+    QString command = QString("%1 %2").arg(mplayer).arg(mp3_);
+    system(command.toUtf8().data());
+#endif
 }
 
 void MainWindow::export_triggered()
@@ -180,6 +218,63 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    history_.showFullScreen();
+    history_.showNormal();
     
 }
+
+void MainWindow::on_add_triggered()
+{
+
+
+    addWordWidget_.activateWindow();
+    QApplication::setActiveWindow(&addWordWidget_);
+    addWordWidget_.raise();
+    addWordWidget_.setFocus();
+    addWordWidget_.goFocus();
+    addWordWidget_.exec();
+
+
+}
+
+void MainWindow::on_search_triggered()
+{
+    this->setVisible(!this->isVisible());
+}
+
+void MainWindow::on_quit_triggered()
+{
+    qDebug("on_quit_triggered");
+    qApp->quit();
+}
+
+void MainWindow::on_short_triggered()
+{
+    if (addWordWidget_.isHidden())
+        on_add_triggered();
+    else
+        addWordWidget_.reject();
+
+    qDebug()<< "on_short_triggered ";
+
+
+}
+
+void MainWindow::test_qapp_quit()
+{
+//    qDebug("test_qapp_quit");
+
+}
+
+void MainWindow::test_qapp_last()
+{
+//    qDebug("test_qapp_last");
+
+}
+//bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+//{
+//    if (event->type() == QEvent::KeyPress) {
+//        ;
+//    }
+//    return false;
+//}
+

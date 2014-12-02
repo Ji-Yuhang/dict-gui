@@ -2,10 +2,13 @@
 #define MAINWINDOW_HXX
 
 #include <QMainWindow>
-#include <QMediaPlayer>
+#include <QSystemTrayIcon>
+//#include <QMediaPlayer>
 #include <json.h>
 #include "exportwidget.hxx"
 #include "wordhistory.hxx"
+#include "addword.hxx"
+#include "QxtGlobalShortcut"
 namespace Ui {
 class MainWindow;
 }
@@ -29,13 +32,28 @@ private slots:
     void on_pushButton_3_clicked();
 
     void on_pushButton_4_clicked();
+
+    void on_add_triggered();
+    void on_search_triggered();
+
+    void on_quit_triggered();
+    void on_short_triggered();
+    void test_qapp_quit();
+    void test_qapp_last();
+
+//    bool eventFilter(QObject *obj, QEvent *event);
     
 private:
+    QSystemTrayIcon trayIcon;
+
     Ui::MainWindow *ui;
     QString mp3_;
     ExportWidget exportWidget_;
-    QMediaPlayer player_;
+//    QMediaPlayer player_;
     WordHistory history_;
+    AddWord addWordWidget_;
+    QWidget testWidget_;
+    QxtGlobalShortcut globalAdd_;
 };
 
 #endif // MAINWINDOW_HXX
